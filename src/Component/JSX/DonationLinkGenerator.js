@@ -21,7 +21,7 @@ function PaymentLinkGenerator() {
     console.log("HERE");
     console.log(amount, currency, note);
     if(amount && currency && note){
-    await fetch(`http://localhost:5000/api/generate-payment-link/${authToken}`, {
+    await fetch(`http://localhost:5000/api/generate-donation-link/${authToken}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ function PaymentLinkGenerator() {
         console.log(data.user._id);
         setdynamic(data.user._id)
         setIsFormOpen(false)
-        document.getElementById("walletAddress").innerText = data.paymentLink;
+        document.getElementById("walletAddress").innerText = data.donationLink;
 
         // Generate and display the QR code
         const qrCode = new qrcode(document.getElementById("qrcode"), {
@@ -52,7 +52,7 @@ function PaymentLinkGenerator() {
   }
   useEffect(() => {
     // Fetch all payment links when the component mounts
-    fetch(`http://localhost:5000/api/v1/getpaymentid/${authToken}`)
+    fetch(`http://localhost:5000/api/v1/getdonationid/${authToken}`)
     .then((response) => {
       if (response.status === 404) {
         throw new Error("User not found or no payment links available");
@@ -84,9 +84,9 @@ function PaymentLinkGenerator() {
     <MerchatSidebar />
     <div className="f-page">
       <div className="f-page">
-      <h1 className="pl"> Payment Link</h1>
+      <h1 className="pl"> Donation Link</h1>
      <div className="btn">
-      <button className="payment-button" onClick={isFormtrue}>Create Payment Link</button>
+      <button className="payment-button" onClick={isFormtrue}>Create Donation Link</button>
      </div>
       </div>
      {isFormOpen && (
@@ -124,7 +124,7 @@ function PaymentLinkGenerator() {
             onChange={(e) => setnote(e.target.value)}
           />
           <br />
-          <button onClick={createPaymentLink}>Create Payment Link</button>
+          <button onClick={createPaymentLink}>Create Donation Link</button>
         </form>
   </div>
 )}
@@ -151,7 +151,7 @@ function PaymentLinkGenerator() {
             <td>{walletAddress.amount}</td>
             <td>{walletAddress.currency}</td>
             <td>{walletAddress.status}</td>
-            <td><Link to={`/PaymentLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}>{`http://localhost:3000/${authToken}/${walletAddress.uniqueid}`}</Link></td>
+            <td><a href={`http://localhost:3000/donationLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}>{`http://localhost:3000/donationLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}</a></td>
             <td>{walletAddress.createdat}</td>
           </tr>
         </tbody>

@@ -48,7 +48,7 @@ function GetApikey() {
   useEffect(() => {
     async function fetchData() {
         try {
-          const response = await fetch(`getUserdata/${authToken}`); // Replace with your API URL
+          const response = await fetch(`http://localhost:5000/getUserdata/${authToken}`); // Replace with your API URL
           if (!response.ok) {
             throw new Error("Request failed");
           }

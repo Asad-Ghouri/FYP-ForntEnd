@@ -13,6 +13,7 @@ function MerchatDashboard() {
     const [Infetchkey, setInfetchkey] = useState('');
     const [paymentCount, setpaymentCount] = useState();
     const authToken = localStorage.getItem('token');
+    const [donationCount, setdonationCount] = useState();
            
  
   
@@ -28,6 +29,9 @@ function MerchatDashboard() {
    function paymentNavigation(){
     navigate("/PaymentLinkGenerator");
    }
+   function donationNavigation(){
+    navigate("/DonationNavigation");
+   }
 
    function Apikey(){
     navigate("/GetApikey");
@@ -36,7 +40,7 @@ function MerchatDashboard() {
   useEffect(() => {
     async function fetchData() {
         try {
-          const response = await fetch(`getUserdata/${authToken}`); // Replace with your API URL
+          const response = await fetch(`http://localhost:5000/getUserdata/${authToken}`); // Replace with your API URL
           if (!response.ok) {
             throw new Error("Request failed");
           }
@@ -53,6 +57,26 @@ function MerchatDashboard() {
       fetchData();
   }, [Infetchkey]);
 
+  useEffect(() => {
+    async function fetchData() {
+        try {
+          const response = await fetch(`http://localhost:5000/getUserdata/${authToken}`); // Replace with your API URL
+          if (!response.ok) {
+            throw new Error("Request failed");
+          }
+          const data = await response.json();
+          console.log("in useEffect data is ",data.apiKeys); // Process the fetched data
+          setApiKey(data.apiKeys)
+          const totalPaymentLinks = data.donationLinks.length;
+          setdonationCount(totalPaymentLinks)
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+      
+      fetchData();
+  }, []);
+
   return (
     <div className="main">
     
@@ -62,9 +86,9 @@ function MerchatDashboard() {
       <br />
       
       
-        <div class="ag-courses_box" onClick={Apikey}>
+        <div class="ag-courses_box" >
 
-                    <div class="ag-courses_item">
+                    <div class="ag-courses_item" onClick={Apikey}>
                         <div class="ag-courses-item_link">
                             <div class="ag-courses-item_bg"></div>
 
@@ -95,7 +119,7 @@ function MerchatDashboard() {
                             </div>
                         </div>
                     </div>
-                    <div class="ag-courses_item">
+                    <div class="ag-courses_item" onClick={donationNavigation}>
                         <div class="ag-courses-item_link">
                             <div class="ag-courses-item_bg" id></div>
 
@@ -105,7 +129,7 @@ function MerchatDashboard() {
 
                             <div class="ag-courses-item_date-box">
                                 <h2 class="ag-courses-item_date">
-                                    0
+                                    {donationCount?donationCount:0}
                                 </h2>
                             </div>
                         </div>

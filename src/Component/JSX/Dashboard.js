@@ -16,6 +16,7 @@ const Dashboard = () => {
     // const [CustomerData, setCustomerData] = useState([]);
 
   const isAuth = useSelector(state=>state.isAuth)
+  
   const navigate= useNavigate();
 
     useEffect(() => {

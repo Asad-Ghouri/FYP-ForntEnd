@@ -37,7 +37,7 @@ function MerchatSidebar() {
               <NavLink to='/PaymentLinkGenerator' className='nav-links'>
                 <InventoryIcon className="icon" style={{ color: 'white' }} /> <span> Payment Link </span>
               </NavLink>
-              <NavLink to='/DonationLink' className='nav-links'>
+              <NavLink to='/DonationNavigation' className='nav-links'>
                 <HistoryIcon className="icon" style={{ color: 'white' }} /> <span>Donation Link</span>
               </NavLink>
             </div>
