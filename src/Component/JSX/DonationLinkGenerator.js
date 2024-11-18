@@ -151,7 +151,7 @@ function PaymentLinkGenerator() {
             <td>{walletAddress.amount}</td>
             <td>{walletAddress.currency}</td>
             <td>{walletAddress.status}</td>
-            <td><a href={`http://localhost:3000/donationLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}>{`http://localhost:3000/donationLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}</a></td>
+            <td><a href={`https://alpha-payment-frontend.vercel.app/donationLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}>{`https://alpha-payment-frontend.vercel.app/donationLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}</a></td>
             <td>{walletAddress.createdat}</td>
           </tr>
         </tbody>
