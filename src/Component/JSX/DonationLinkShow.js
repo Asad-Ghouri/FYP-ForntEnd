@@ -38,7 +38,7 @@ const DonationLinkShow = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`https://alpha-payment-backend.vercel.app/donationLinkGenerator/gett/${id}/${amd}`);          
+        const response = await fetch(`https://alpha-payment-backend.vercel.app/api/donationLinkGenerator/gett/${id}/${amd}`);          
         
         if (!response.ok) {
           throw new Error("Request failed");
@@ -67,7 +67,7 @@ const DonationLinkShow = () => {
     const handleButtonClick = async () => {
       try {
         const response = await axios.get(
-          `https://alpha-payment-backend.vercel.app/gett/${id}/${amd}/${address}/${amount}/${privateKey}`
+          `https://alpha-payment-backend.vercel.app/api/gett/${id}/${amd}/${address}/${amount}/${privateKey}`
         ); // Replace with your API endpoint
         if (response.data) {
           // navigate("/PaymentLinkGenerator")
