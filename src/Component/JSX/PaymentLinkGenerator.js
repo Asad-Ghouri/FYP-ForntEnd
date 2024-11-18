@@ -21,7 +21,7 @@ function PaymentLinkGenerator() {
     console.log("HERE");
     console.log(amount, currency, note);
     if(amount && currency && note){
-    await fetch(`http://localhost:5000/api/generate-payment-link/${authToken}`, {
+    await fetch(`https://alpha-payment-backend.vercel.app/api/generate-payment-link/${authToken}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ function PaymentLinkGenerator() {
   }
   useEffect(() => {
     // Fetch all payment links when the component mounts
-    fetch(`http://localhost:5000/api/v1/getpaymentid/${authToken}`)
+    fetch(`https://alpha-payment-backend.vercel.app/api/v1/getpaymentid/${authToken}`)
     .then((response) => {
       if (response.status === 404) {
         throw new Error("User not found or no payment links available");
