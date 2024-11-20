@@ -469,7 +469,7 @@ const Linkshow = () => {
   useEffect(() => {
     const handleButtonClick = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           `https://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
         ); // Replace with your API endpoint
         if (response.data) {
