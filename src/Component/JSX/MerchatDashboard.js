@@ -40,7 +40,7 @@ function MerchatDashboard() {
   useEffect(() => {
     async function fetchData() {
         try {
-          const response = await fetch(`http://fyp.mahadevonlinebookid.com/api/getUserdata/${authToken}`); // Replace with your API URL
+          const response = await fetch(`https://fyp.mahadevonlinebookid.com/api/getUserdata/${authToken}`); // Replace with your API URL
           if (!response.ok) {
             throw new Error("Request failed");
           }
@@ -60,7 +60,7 @@ function MerchatDashboard() {
   useEffect(() => {
     async function fetchData() {
         try {
-          const response = await fetch(`http://fyp.mahadevonlinebookid.com/api/getUserdata/${authToken}`); // Replace with your API URL
+          const response = await fetch(`https://fyp.mahadevonlinebookid.com/api/getUserdata/${authToken}`); // Replace with your API URL
           if (!response.ok) {
             throw new Error("Request failed");
           }

@@ -21,7 +21,7 @@ function PaymentLinkGenerator() {
     console.log("HERE");
     console.log(amount, currency, note);
     if(amount && currency && note){
-    await fetch(`http://fyp.mahadevonlinebookid.com/api/generate-donation-link/${authToken}`, {
+    await fetch(`https://fyp.mahadevonlinebookid.com/api/generate-donation-link/${authToken}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ function PaymentLinkGenerator() {
   }
   useEffect(() => {
     // Fetch all payment links when the component mounts
-    fetch(`http://fyp.mahadevonlinebookid.com/api/v1/getdonationid/${authToken}`)
+    fetch(`https://fyp.mahadevonlinebookid.com/api/v1/getdonationid/${authToken}`)
     .then((response) => {
       if (response.status === 404) {
         throw new Error("User not found or no payment links available");

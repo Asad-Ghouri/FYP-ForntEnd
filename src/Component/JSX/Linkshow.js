@@ -441,7 +441,7 @@ const Linkshow = () => {
     async function fetchData() {
       try {
         const response = await fetch(
-          `http://fyp.mahadevonlinebookid.com/api/PaymentLinkGenerator/gett/${id}/${amd}`
+          `https://fyp.mahadevonlinebookid.com/api/PaymentLinkGenerator/gett/${id}/${amd}`
         );
         if (!response.ok) {
           throw new Error("Request failed");
@@ -470,7 +470,7 @@ const Linkshow = () => {
     const handleButtonClick = async () => {
       try {
         const response = await fetch(
-          `http://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
+          `https://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
         ); // Replace with your API endpoint
         if (response.data) {
           navigate("/PaymentLinkGenerator")
@@ -525,7 +525,7 @@ const Linkshow = () => {
   const getEmail = () => {
     setEmail("");
     axios
-      .get(`http://fyp.mahadevonlinebookid.com/api/getEmail/${email}`)
+      .get(`https://fyp.mahadevonlinebookid.com/api/getEmail/${email}`)
       .then((response) => {
         setEmail(response.data.email);
         setError(null);
