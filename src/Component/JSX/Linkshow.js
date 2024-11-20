@@ -64,18 +64,18 @@
 //   // console.log("data address is",data[0].address)
 
 //   useEffect(() => {
-//     const handleButtonClick = async () => {
-//       try {
-//         const response = await axios.get(
-//           `gett/${id}/${amd}/${address}/${amount}/${privateKey}`
-//         ); // Replace with your API endpoint
-//         if (response.data) {
-//           // navigate("/PaymentLinkGenerator")
-//         }
-//       } catch (error) {
-//         console.error("Error fetching data:", error);
-//       }
-//     };
+    // const handleButtonClick = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       `gett/${id}/${amd}/${address}/${amount}/${privateKey}`
+    //     ); // Replace with your API endpoint
+    //     if (response.data) {
+    //       // navigate("/PaymentLinkGenerator")
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // };
 //     // Call handleButtonClick initially
 //     handleButtonClick();
 
@@ -466,56 +466,24 @@ const Linkshow = () => {
 
   // console.log("data address is",data[0].address)
 
-  useEffect(() => {
-    const handleButtonClick = async () => {
-      try {
-        const response = await axios.get(
-          `https://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
-        ); // Replace with your API endpoint
-        if (response.data) {
-          // navigate("/PaymentLinkGenerator")
-        console.log("good");
+  // useEffect(() => {
+  //   const handleButtonClick = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `https://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
+  //       ); 
+  //       if (response.data) {
+  //        console.log("good");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   }; 
+  //   handleButtonClick();
+  //   console.log("use effect 2");
+  // }, [address, amd, amount, id, navigate, privateKey]);
 
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    // Call handleButtonClick initially
-    handleButtonClick();
-
-    
-    console.log("use effect 2");
-  }, [address, amd, amount, id, navigate, privateKey]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.coingecko.com/api/v3/simple/price",
-          {
-            params: {
-              ids: "bitcoin",
-              vs_currencies: "usd",
-            },
-          }
-        );
-        const data = response.data;
-        setBtcPrice(data.bitcoin.usd);
-      } catch (error) {
-        console.error("Error fetching BTC price:", error);
-      }
-    };
-
-    // Fetch BTC price initially
-    fetchData();
-
-    // Set up an interval to fetch and update BTC price every 30 seconds (adjust as needed)
-    // const intervalId = setInterval(fetchData, 30000);
-
-    // // Clear the interval when the component unmounts
-    // return () => clearInterval(intervalId);
-  }, []);
+ 
 
   const handleCopyClick = (address) => {
     if (address) {
@@ -559,11 +527,9 @@ const Linkshow = () => {
               <h1 className="payment-title">Alpha Payment</h1>
               <div className="payment-amount">
                 <span className="payment-amount-value">
-                  {btcPrice
-                    ? `${(payment.amount / btcPrice).toFixed(8)} BTC`
-                    : "Loading..."}{" "}
+                {payment.amount} OutLet
                 </span>
-                <span className="payment-currency">${payment.amount}</span>
+                <span className="payment-currency">{payment.amount}</span>
               </div>
               <p>{payment.expiresAt}</p>
               <p className="payment-address">Send the funds to this address</p>
