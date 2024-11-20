@@ -15,9 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
   <React.StrictMode>
-    <ThirdwebProvider  clientId = "c63fd3dcf8c9eec46c253e543b0ff569">
     <App />
-  </ThirdwebProvider>
   </React.StrictMode>
   </Provider>
     ,
