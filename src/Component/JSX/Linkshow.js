@@ -473,7 +473,9 @@ const Linkshow = () => {
           `https://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
         ); // Replace with your API endpoint
         if (response.data) {
-          navigate("/PaymentLinkGenerator")
+          // navigate("/PaymentLinkGenerator")
+        console.log("good");
+
         }
       } catch (error) {
         console.error("Error fetching data:", error);
