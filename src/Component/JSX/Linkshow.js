@@ -441,7 +441,7 @@ const Linkshow = () => {
     async function fetchData() {
       try {
         const response = await fetch(
-          `https://alpha-payment-backend.vercel.app/api/PaymentLinkGenerator/gett/${id}/${amd}`
+          `http://fyp.mahadevonlinebookid.com/api/PaymentLinkGenerator/gett/${id}/${amd}`
         );
         if (!response.ok) {
           throw new Error("Request failed");
@@ -470,7 +470,7 @@ const Linkshow = () => {
     const handleButtonClick = async () => {
       try {
         const response = await fetch(
-          `https://alpha-payment-backend.vercel.app/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
+          `http://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
         ); // Replace with your API endpoint
         if (response.data) {
           navigate("/PaymentLinkGenerator")
@@ -525,7 +525,7 @@ const Linkshow = () => {
   const getEmail = () => {
     setEmail("");
     axios
-      .get(`https://alpha-payment-backend.vercel.app/api/getEmail/${email}`)
+      .get(`http://fyp.mahadevonlinebookid.com/api/getEmail/${email}`)
       .then((response) => {
         setEmail(response.data.email);
         setError(null);
