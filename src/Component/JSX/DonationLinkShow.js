@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import QRCode from "qrcode.react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
@@ -6,16 +7,11 @@ import axios from "axios";
 import copy from "clipboard-copy";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
-import { ConnectWallet, useAddress, useSDK } from "@thirdweb-dev/react";
-const DonationLinkShow = () => {
+const Linkshow = () => {
   const navigate = useNavigate();
   const [data, setdata] = useState([]);
 
-  const addresss = useAddress();
-
-  const [btcPrice, setBtcPrice] = useState(null);
-
-  const sdk = useSDK();
+  
 
   const [help, setHelp] = useState(false);
 
@@ -39,7 +35,7 @@ const DonationLinkShow = () => {
     async function fetchData() {
       try {
         const response = await fetch(`https://fyp.mahadevonlinebookid.com/api/donationLinkGenerator/gett/${id}/${amd}`);          
-        
+
         if (!response.ok) {
           throw new Error("Request failed");
         }
@@ -67,58 +63,20 @@ const DonationLinkShow = () => {
     const handleButtonClick = async () => {
       try {
         const response = await axios.get(
-          `https://fyp.mahadevonlinebookid.com/api/gett/${id}/${amd}/${address}/${amount}/${privateKey}`
-        ); // Replace with your API endpoint
+          `https://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
+        ); 
         if (response.data) {
-          // navigate("/PaymentLinkGenerator")
+         console.log("good");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    };
-    // Call handleButtonClick initially
+    }; 
     handleButtonClick();
-
-    // Set up an interval to call handleButtonClick every 10 seconds
-    // const interval = setInterval(() => {
-    //   handleButtonClick();
-    // }, 10000); // 10,000 milliseconds = 10 seconds
-
-    // // Clean up the interval when the component unmounts
-    // return () => {
-    //   clearInterval(interval);
-    // };
     console.log("use effect 2");
   }, [address, amd, amount, id, navigate, privateKey]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.coingecko.com/api/v3/simple/price",
-          {
-            params: {
-              ids: "bitcoin",
-              vs_currencies: "usd",
-            },
-          }
-        );
-        const data = response.data;
-        setBtcPrice(data.bitcoin.usd);
-      } catch (error) {
-        console.error("Error fetching BTC price:", error);
-      }
-    };
-
-    // Fetch BTC price initially
-    fetchData();
-
-    // Set up an interval to fetch and update BTC price every 30 seconds (adjust as needed)
-    // const intervalId = setInterval(fetchData, 30000);
-
-    // // Clear the interval when the component unmounts
-    // return () => clearInterval(intervalId);
-  }, []);
+ 
 
   const handleCopyClick = (address) => {
     if (address) {
@@ -130,7 +88,7 @@ const DonationLinkShow = () => {
   const getEmail = () => {
     setEmail("");
     axios
-      .get(`getEmail/${email}`)
+      .get(`https://fyp.mahadevonlinebookid.com/api/getEmail/${email}`)
       .then((response) => {
         setEmail(response.data.email);
         setError(null);
@@ -141,17 +99,7 @@ const DonationLinkShow = () => {
       });
   };
 
-  async function transferFunds() {
-    try {
-      const txResult = await sdk.wallet.transfer(address, amount);
-      console.error("done" + txResult);
-      return true;
-    } catch (error) {
-      console.error("Error during transfer:", error);
-      alert("You have Insufficient balance");
-      return false;
-    }
-  }
+
 
   return (
     <>
@@ -162,11 +110,9 @@ const DonationLinkShow = () => {
               <h1 className="payment-title">Alpha Payment</h1>
               <div className="payment-amount">
                 <span className="payment-amount-value">
-                  {btcPrice
-                    ? `${(payment.amount / btcPrice).toFixed(8)} BTC`
-                    : "Loading..."}{" "}
+                {payment.amount} OutLet
                 </span>
-                <span className="payment-currency">${payment.amount}</span>
+                <span className="payment-currency">{payment.amount}</span>
               </div>
               <p>{payment.expiresAt}</p>
               <p className="payment-address">Send the funds to this address</p>
@@ -183,26 +129,29 @@ const DonationLinkShow = () => {
               </div>
               <div>
                 {payment.status === "Pending" ? (
-                  <div>
-                    <div>
-                      <QRCode value={payment.address} />
-                    </div>
-                    {!addresss ? (
-                      <ConnectWallet
-                        text="Connect Your Wallet"
-                        color="primary"
-                        size="large"
-                      />
-                    ) : (
-                      <button onClick={transferFunds} id="add-fund-button" className="submit-button">
-                        Add Funds
-                      </button>
-                    )}
+                 <div>
+                     <div>
+                       <QRCode value={payment.address} />
+                     </div>
                   </div>
+                  // <div>
+                  
+                  //   {!addresss ? (
+                  //     <ConnectWallet
+                  //       text="Connect Your Wallet"
+                  //       color="primary"
+                  //       size="large"
+                  //     />
+                  //   ) : (
+                  //     <button onClick={transferFunds} id="add-fund-button" className="submit-button">
+                  //       Add Funds
+                  //     </button>
+                  //   )}
+                  // </div>
                 ) : (
                   <div>
                     {/* <p>Already Approved</p> */}
-                    {/* <img src={done} alt="" className="aprImg"  /> */}
+                    <img src="https://media.istockphoto.com/id/1296078405/vector/vector-isolated-round-completed-label.jpg?s=612x612&w=0&k=20&c=CNkTbrNNNikay9hTXc02OXFKF40XZJp_w2eomM4LxEU=" alt="" className="aprImg"  />
                     <a href="https://tiaiuto.shop/index.php/my-account/orders/"  target="_blank" rel="noreferrer">
                     <button  id="add-fund-button" className="submit-button">
                         Payment Confirmed
@@ -395,4 +344,4 @@ const DonationLinkShow = () => {
   );
 };
 
-export default DonationLinkShow;
+export default Linkshow;

@@ -3,7 +3,6 @@
   "homepage": ".",
   "version": "0.1.0",
   "private": true,
- 
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -17,8 +16,6 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^14.2.0",
-    "@thirdweb-dev/react": "^3",
-    "@thirdweb-dev/sdk": "^3",
     "assert": "^2.0.0",
     "axios": "^1.5.0",
     "browserify-zlib": "^0.2.0",
@@ -28,6 +25,7 @@
     "http-browserify": "latest",
     "https": "npm:https-browserify",
     "https-browserify": "latest",
+    "qrcode": "^1.5.4",
     "qrcode.react": "^3.1.0",
     "react": "^18.2",
     "react-dom": "^18.2",
@@ -52,9 +50,9 @@
     "stream-browserify": "^3.0.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "yarn build && npx thirdweb@latest upload build"
   },
