@@ -35,7 +35,7 @@ const Linkshow = () => {
     async function fetchData() {
       try {
         const response = await fetch(
-          `https://fyp.mahadevonlinebookid.com/api/PaymentLinkGenerator/gett/${id}/${amd}`
+          `https://fyp-back-end-bay.vercel.app/api/PaymentLinkGenerator/gett/${id}/${amd}`
         );
         if (!response.ok) {
           throw new Error("Request failed");
@@ -64,7 +64,7 @@ const Linkshow = () => {
     const handleButtonClick = async () => {
       try {
         const response = await axios.get(
-          `https://fyp.mahadevonlinebookid.com/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
+          `https://fyp-back-end-bay.vercel.app/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
         ); 
         if (response.data) {
          console.log("good");
@@ -89,7 +89,7 @@ const Linkshow = () => {
   const getEmail = () => {
     setEmail("");
     axios
-      .get(`https://fyp.mahadevonlinebookid.com/api/getEmail/${email}`)
+      .get(`https://fyp-back-end-bay.vercel.app/api/getEmail/${email}`)
       .then((response) => {
         setEmail(response.data.email);
         setError(null);

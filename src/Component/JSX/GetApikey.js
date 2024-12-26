@@ -18,13 +18,13 @@ function GetApikey() {
            
   const generateApiKey = async () => {
     
-   const data = await fetch(`https://fyp.mahadevonlinebookid.com/api/generateApiKey/${authToken}`, {
+   const data = await fetch(`https://fyp-back-end-bay.vercel.app/api/generateApiKey/${authToken}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    setInfetchkey(key=>!key)
+    setInfetchkey(data)
   };
 
   const handleCopyKey = (key) => {
@@ -48,7 +48,7 @@ function GetApikey() {
   useEffect(() => {
     async function fetchData() {
         try {
-          const response = await fetch(`https://fyp.mahadevonlinebookid.com/api/getUserdata/${authToken}`); // Replace with your API URL
+          const response = await fetch(`https://fyp-back-end-bay.vercel.app/api/getUserdata/${authToken}`); // Replace with your API URL
           if (!response.ok) {
             throw new Error("Request failed");
           }

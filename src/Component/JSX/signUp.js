@@ -33,7 +33,7 @@ const Signup = () => {
     e.preventDefault();
     const { Name, email, password } = user;
 
-    const res = await fetch('/Registration', {
+    const res = await fetch('https://fyp-back-end-bay.vercel.app/api/Registration', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
