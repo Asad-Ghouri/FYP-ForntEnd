@@ -49,7 +49,13 @@ const Linkshow = () => {
         setprivateKey(data.paymentLinks[0].privateKey);
         _setStatus(data.paymentLinks[0].status)
         // Generate QR codes for each payment
-
+       
+        // if (data.paymentLinks[0].status !== "done") {
+        //   const secondResponse = await axios.get(
+        //     `https://fyp-back-end-bay.vercel.app/api/changedetails/gett/${id}/${amd}/${data.paymentLinks[0].address}/${data.paymentLinks[0].amount}/${data.paymentLinks[0].privateKey}/${data.paymentLinks[0].amount}`
+        //   );
+        //   console.log("Second API response:", secondResponse.data);
+        // }
       } catch (error) {
         console.error("Error:", error);
       }
@@ -77,31 +83,7 @@ const Linkshow = () => {
   //   console.log("use effect 2");
   // }, [address, amd, amount, id, navigate, privateKey]);
 
-  useEffect(() => {
-    const handleButtonClick = async () => {
-      try {
-        if (!id || !amd || !address || !amount || !privateKey) return;
-  
-        const response = await axios.get(
-          `https://fyp-back-end-bay.vercel.app/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
-        );
-        if (response.data) {
-          console.log("good");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  
-    // Set up interval
-    const intervalId = setInterval(() => {
-      handleButtonClick();
-    }, 5000); // 5000ms = 5 seconds
-  
-    // Clean up interval on component unmount
-    return () => clearInterval(intervalId);
-  }, [address, amd, amount, id, privateKey]);
-  
+ 
   
  
 
