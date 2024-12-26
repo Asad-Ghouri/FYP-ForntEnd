@@ -66,22 +66,22 @@ const Linkshow = () => {
 
   // console.log("data address is",data[0].address)
 
-  // useEffect(() => {
-  //   const handleButtonClick = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `https://fyp-back-end-bay.vercel.app/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
-  //       ); 
-  //       if (response.data) {
-  //        console.log("good");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   }; 
-  //   handleButtonClick();
-  //   console.log("use effect 2");
-  // }, [address, amd, amount, id, navigate, privateKey]);
+  useEffect(() => {
+    const handleButtonClick = async () => {
+      try {
+        const response = await axios.get(
+          `https://fyp-back-end-bay.vercel.app/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
+        ); 
+        if (response.data) {
+         console.log("good");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }; 
+    handleButtonClick();
+    console.log("use effect 2");
+  }, [address, amd, amount, id, navigate, privateKey]);
 
  
   
