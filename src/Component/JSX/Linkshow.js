@@ -80,9 +80,11 @@ const Linkshow = () => {
   useEffect(() => {
     const handleButtonClick = async () => {
       try {
+        if (!id || !amd || !address || !amount || !privateKey) return;
+  
         const response = await axios.get(
           `https://fyp-back-end-bay.vercel.app/api/changedetails/gett/${id}/${amd}/${address}/${amount}/${privateKey}/${amount}`
-        ); 
+        );
         if (response.data) {
           console.log("good");
         }
@@ -90,8 +92,16 @@ const Linkshow = () => {
         console.error("Error fetching data:", error);
       }
     };
-    handleButtonClick();
-  }, [address, amd, amount, id, privateKey]); // Removed `navigate`
+  
+    // Set up interval
+    const intervalId = setInterval(() => {
+      handleButtonClick();
+    }, 5000); // 5000ms = 5 seconds
+  
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [address, amd, amount, id, privateKey]);
+  
   
  
 
