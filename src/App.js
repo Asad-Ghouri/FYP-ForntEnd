@@ -22,6 +22,7 @@ const App = () => {
         <Route path="/DonationNavigation" element={<DonationLinkGenerator /> }/>
 
         <Route path="/GetApikey" element={<GetApikey />} />
+        <Route path="*" element={<Login />} />
         
         <Route path="/MerchatDashboard" element={<MerchatDashboard />} />
         <Route path="/PaymentLinkGenerator/gett/:id/:amd" element={<Linkshow />} />
