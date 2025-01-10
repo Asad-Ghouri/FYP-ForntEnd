@@ -1,96 +1,183 @@
-import React from 'react'
-import logo from '../Images/IMG_3028.JPG'
-import { Icon } from 'react-icons-kit'
-import { eye } from 'react-icons-kit/feather/eye'
-import { eyeOff } from 'react-icons-kit/feather/eyeOff'
-import '../CSS/Login.css';
-import { useState } from 'react'
-
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
-
-
+import { TextField, Button, IconButton, Paper, Typography, Box, Container } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../CSS/Login.css';
 
 const Signup = () => {
-
-  const navigate= useNavigate();
-  const [user, setuser] = useState({
-    Name: "", email: "", password: ""
+  const navigate = useNavigate();
+  
+  const [formData, setFormData] = useState({
+    Name: '',
+    email: '',
+    password: '',
+    showPassword: false
   });
 
-  const [type, setType] = useState('password');
-  const [icon, setIcon] = useState(eyeOff);
+  const handleChange = (prop) => (event) => {
+    setFormData({ ...formData, [prop]: event.target.value });
+  };
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
+  const handleClickShowPassword = () => {
+    setFormData({ ...formData, showPassword: !formData.showPassword });
+  };
 
-    setuser({...user, [name]:value});
-    console.log(user);
-  }
   const postData = async (e) => {
-
     e.preventDefault();
-    const { Name, email, password } = user;
+    
+    try {
+      const res = await fetch('https://fyp-back-end-bay.vercel.app/api/Registration', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          Name: formData.Name,
+          email: formData.email,
+          password: formData.password
+        })
+      });
 
-    const res = await fetch('https://fyp-back-end-bay.vercel.app/api/Registration', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+      const data = await res.json();
+      
+      if (res.status === 422 || !data) {
+        toast.error("User already exists", {
+          position: "top-right",
+          autoClose: 3000
+        });
+      } else {
+        toast.success("Registration Successful!", {
+          position: "top-right",
+          autoClose: 2000,
+          onClose: () => {
+            navigate("/");
+          }
+        });
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.", {
+        position: "top-right",
+        autoClose: 3000
+      });
+    }
+  };
+
+  const paperStyle = {
+    background: '#2D3748',
+    borderRadius: '20px',
+    boxShadow: '0 8px 32px rgba(0, 180, 219, 0.15)',
+    border: '1px solid rgba(0, 180, 219, 0.2)',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.02)'
+    }
+  };
+
+  const backgroundStyle = {
+    minHeight: '100vh',
+    background: '#1A202C',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '20px 0'
+  };
+
+  const inputStyle = {
+    '& .MuiOutlinedInput-root': {
+      color: 'white',
+      '& fieldset': {
+        borderColor: 'rgba(0, 180, 219, 0.3)',
       },
-      body: JSON.stringify({
-        Name, email, password
-      })
-
-    });
-    const data = await res.json();
-    if (res.status === 422 || !data) {
-      window.alert("User already Exist"); console.log("User already Exist");
-    } else {
-      window.alert(" Registration Successfull"); console.log("Successfull Registration");
-      navigate("/");
+      '&:hover fieldset': {
+        borderColor: '#00B4DB',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#00B4DB',
+      },
+    },
+    '& .MuiInputLabel-root': {
+      color: 'rgba(255, 255, 255, 0.7)',
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#00B4DB',
     }
-  }
-    const handleToggle = () => {
+  };
 
-      if (type === 'password') {
-        setIcon(eye);
-        setType('text');
-      }
-      else {
-        setIcon(eyeOff);
-        setType('password');
-      }
-    }
+  return (
+    <Box sx={backgroundStyle}>
+      <ToastContainer />
+      <Container maxWidth="xs">
+        <Paper elevation={3} sx={paperStyle}>
+          <Box p={4}>
+            <Typography variant="h4" align="center" gutterBottom sx={{ color: '#00B4DB', fontWeight: 600, mb: 4 }}>
+              Sign Up
+            </Typography>
+            <form onSubmit={postData}>
+              <TextField
+                label="Name"
+                fullWidth
+                margin="normal"
+                value={formData.Name}
+                onChange={handleChange('Name')}
+                sx={inputStyle}
+              />
+              <TextField
+                label="Email"
+                fullWidth
+                margin="normal"
+                value={formData.email}
+                onChange={handleChange('email')}
+                sx={inputStyle}
+              />
+              <TextField
+                label="Password"
+                fullWidth
+                margin="normal"
+                type={formData.showPassword ? 'text' : 'password'}
+                value={formData.password}
+                onChange={handleChange('password')}
+                sx={inputStyle}
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                      sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                    >
+                      {formData.showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  ),
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  background: 'linear-gradient(45deg, #00B4DB 30%, #0083B0 90%)',
+                  color: 'white',
+                  '&:hover': {
+                    background: 'linear-gradient(45deg, #0083B0 30%, #00B4DB 90%)',
+                  }
+                }}
+              >
+                Sign Up
+              </Button>
+              <Typography align="center" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                Already have an account?{' '}
+                <NavLink to="/" style={{ color: '#00B4DB', textDecoration: 'none' }}>
+                  Sign In
+                </NavLink>
+              </Typography>
+            </form>
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
+  );
+};
 
-
-    return (
-      < div className='container'>
-        <form className='Loginform' method='POST'>
-          <div className='formlogo'>
-            <img src={logo} alt="Logo" />
-          </div>
-          <div className='title'><h1>Create your account</h1></div>
-          <div className='input-container1'>
-            <input type="text" name='Name' id='name' autoComplete='off' required className='text-input1' value={user.Name} onChange={handleInputs} />
-            <label htmlFor="name" className='label'>Full name</label>
-          </div>
-          <div className='input-container1'>
-            <input type="text" name='email' id='email' autoComplete='off' required className='text-input1' value={user.email} onChange={handleInputs} />
-            <label htmlFor="email" className='label'>Email address</label>
-          </div>
-          <div className='input-container1'>
-            <input type={type} name='password' id='password' autoComplete='off' required className='text-input1' value={user.password} onChange={handleInputs} />
-            <label htmlFor="password" className='label'>Password</label>
-            <span onClick={handleToggle} className='icon'><Icon icon={icon} size={20} color='black' /></span>
-          </div>
-          <button type="submit" className='Login' onClick={postData}>Create</button>
-          <div className='Sigin-Up' > <h1>Have an account?<span><NavLink to="/"> Sign in</NavLink></span></h1>
-          </div>
-        </form>
-      </div>
-
-    )
-  }
-
-  export default Signup
+export default Signup;

@@ -1,0 +1,260 @@
+body {
+  background-color: #1A202C;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.payment-link-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  font-family: 'Syne', sans-serif !important;
+  padding: 0 20px;
+}
+
+.payment-main {
+  flex: 2;
+  background: #2D3748;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.payment-sidebar {
+  flex: 1;
+  padding: 30px;
+  background: #1A202C;
+  border-radius: 12px;
+  color: #fff;
+}
+
+.payment-header {
+  margin-bottom: 40px;
+}
+
+.payment-header h1 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-family: 'Syne', sans-serif;
+}
+
+.payment-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 30px 0;
+}
+
+.payment-amount-value {
+  font-weight: 500;
+}
+
+.payment-address-container {
+  margin: 30px 0;
+}
+
+.payment-address-container p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.payment-address {
+  background: #1A202C;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.address-text {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  word-break: break-all;
+}
+
+.copy-button {
+  color: #00B4DB;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+  color: #0083B0;
+  transform: scale(1.1);
+}
+
+.qr-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.qr-code {
+  padding: 20px;
+  background: #1A202C;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0;
+  position: relative;
+  padding: 0 20px;
+}
+
+.status-container::before {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+.status-step {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 120px;
+}
+
+.status-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.status-circle.active {
+  background: #00B4DB;
+  color: white;
+}
+
+.status-circle.completed {
+  background: #00B4DB;
+  color: white;
+}
+
+.status-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.payment-info {
+  margin-top: 40px;
+}
+
+.payment-id {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.payment-id span {
+  color: #00B4DB;
+  display: block;
+  margin-top: 5px;
+  word-break: break-all;
+}
+
+.email-container {
+  margin-top: 30px;
+}
+
+.email-container p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.email-input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.email-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.submit-button {
+  width: 100%;
+  background: #00B4DB;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.submit-button:hover {
+  background: #0083B0;
+}
+
+.disclaimer {
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.back-button, .help-button {
+  color: #00B4DB;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.back-button:hover, .help-button:hover {
+  color: #0083B0;
+}

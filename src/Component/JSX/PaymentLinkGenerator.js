@@ -1,168 +1,419 @@
 import React, { useState, useEffect } from "react";
-import QRCode from "qrcode.react";
-import qrcode from "qrcode";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  IconButton,
+  Chip
+} from '@mui/material';
+import { Add, ContentCopy, Launch } from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import MerchatSidebar from './MerchatSidebar';
 
+const MotionTableRow = motion(TableRow);
+
 function PaymentLinkGenerator() {
-  const navigate=useNavigate();
-  const [amount, setamount] = useState();
-  const [currency, setcurrency] = useState();
-  const [note, setnote] = useState();
+  const [amount, setAmount] = useState("");
+  const [currency, setCurrency] = useState("");
+  const [note, setNote] = useState("");
   const [paymentLinks, setPaymentLinks] = useState([]);
-  const [dynamic,setdynamic]=useState();
-  const userId = useSelector((state) => state.UserId);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const authToken = localStorage.getItem('token');
-  async function createPaymentLink() {
-    console.log("HERE");
-    console.log(amount, currency, note);
-    if(amount && currency && note){
-    await fetch(`https://fyp-back-end-bay.vercel.app/api/generate-payment-link/${authToken}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount, currency, note }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Display the wallet address
-        console.log(data.user._id);
-        setdynamic(data.user._id)
-        setIsFormOpen(false)
-        document.getElementById("walletAddress").innerText = data.paymentLink;
 
-        // Generate and display the QR code
-        const qrCode = new qrcode(document.getElementById("qrcode"), {
-          text: data.qrCode,
-          width: 128,
-          height: 128,
-        });
-      })
-      .catch((error) => console.error(error));
+  const createPaymentLink = async (e) => {
+    e.preventDefault();
+    if (!amount || !currency || !note) {
+      toast.error("Please fill all required fields");
+      return;
     }
-    else{
-      return 1;
+
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://fyp-back-end-bay.vercel.app/api/generate-payment-link/${authToken}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ amount, currency, note }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to create payment link");
+      }
+
+      const data = await response.json();
+      setIsFormOpen(false);
+      toast.success("Payment link created successfully!");
+      fetchPaymentLinks();
+    } catch (error) {
+      toast.error("Failed to create payment link");
+    } finally {
+      setLoading(false);
     }
-      // navigate('/PaymentLinkGenerator/gett')
-  }
-  useEffect(() => {
-    // Fetch all payment links when the component mounts
-    fetch(`https://fyp-back-end-bay.vercel.app/api/v1/getpaymentid/${authToken}`)
-    .then((response) => {
-      if (response.status === 404) {
-        throw new Error("User not found or no payment links available");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      setPaymentLinks(data); // Store the payment links in state
-    })
-    .catch((error) => {
-      if (error.message === "User not found or no payment links available") {
-        console.log(error.message); // Handle the 404 error message here
-        // You can set an appropriate state or display an error message to the user
-      } else {
-        console.error(error); // Handle other errors
-      }
-    });
-  
-  },[dynamic]);
-  function isFormtrue(){
-    setIsFormOpen(true)
-  }
-  const closePopup = () => {
-    setIsFormOpen(false);
   };
-  
-  return (
-    <div className="main">
-    <MerchatSidebar />
-    <div className="f-page">
-      <div className="f-page">
-      <h1 className="pl"> Payment Link</h1>
-     <div className="btn">
-      <button className="payment-button" onClick={isFormtrue}>Create Payment Link</button>
-     </div>
-      </div>
-     {isFormOpen && (
-  <div className="popup-form">
-    <button className="close-button" onClick={closePopup}>
-    &times;
-  </button>
-     <form>
-          <label htmlFor="amount">Amount:</label>
-          <input
-            type="text"
-            id="amount"
-            placeholder="Enter amount"
-            value={amount}
-            onChange={(e) => setamount(e.target.value)}
-            required
-          />
-          <br />
-          <label htmlFor="currency">Currency:</label>
-          <input
-            type="text"
-            id="currency"
-            placeholder="Enter currency"
-            value={currency}
-            onChange={(e) => setcurrency(e.target.value)}
-            required
-          />
-          <br />
-          <label htmlFor="note">Note:</label>
-          <input
-            type="text"
-            id="note"
-            placeholder="Enter note"
-            value={note}
-            onChange={(e) => setnote(e.target.value)}
-          />
-          <br />
-          <button onClick={createPaymentLink}>Create Payment Link</button>
-        </form>
-  </div>
-)}
-     
-      <div id="qrcode" />
-   
-    
-    <div className="payment-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Payment link ID</th>
-            <th>Price</th>
-            <th>Currency</th>
-            <th>Status</th>
-            <th>Invoice URL</th>
-            <th>Created at</th>
-          </tr>
-        </thead>
-        { paymentLinks.map((walletAddress, index) => (
-        <tbody>
-          <tr>
-            <td>{walletAddress._id}</td>
-            <td>{walletAddress.amount}</td>
-            <td>{walletAddress.currency}</td>
-            <td>{walletAddress.status}</td>
-            <td><Link to={`/PaymentLinkGenerator/gett/${authToken}/${walletAddress.uniqueid}`}>{`https://alpha-payment-frontend.vercel.app/${authToken}/${walletAddress.uniqueid}`}</Link></td>
-            <td>{walletAddress.createdat}</td>
-          </tr>
-        </tbody>
-        ))
-          }
-      </table>
-    </div>
-    
-    </div>
 
-    </div>
+  const fetchPaymentLinks = async () => {
+    try {
+      const response = await fetch(
+        `https://fyp-back-end-bay.vercel.app/api/v1/getpaymentid/${authToken}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch payment links");
+      }
+      const data = await response.json();
+      setPaymentLinks(data);
+    } catch (error) {
+      toast.error("Failed to fetch payment links");
+    }
+  };
+
+  useEffect(() => {
+    fetchPaymentLinks();
+  }, [authToken]);
+
+  const handleCopyLink = (link) => {
+    navigator.clipboard.writeText(link);
+    toast.success("Link copied to clipboard!");
+  };
+
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case 'done':
+        return '#4CAF50';
+      case 'pending':
+        return '#FFC107';
+      default:
+        return '#757575';
+    }
+  };
+
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#1A202C' }}>
+      <Box sx={{ width: 240, flexShrink: 0 }}>
+        <MerchatSidebar />
+      </Box>
+      
+      <Box sx={{ flexGrow: 1, p: 3 }}>
+        <ToastContainer />
+        <Container maxWidth="xl">
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            mb: 4
+          }}>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                color: '#00B4DB',
+                fontWeight: 600,
+                background: 'linear-gradient(45deg, #00B4DB 30%, #0083B0 90%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              Payment Links
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={() => setIsFormOpen(true)}
+              startIcon={<Add />}
+              sx={{
+                background: 'linear-gradient(45deg, #00B4DB 30%, #0083B0 90%)',
+                color: 'white',
+                padding: '10px 20px',
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontWeight: 500,
+                '&:hover': {
+                  background: 'linear-gradient(45deg, #0083B0 30%, #00B4DB 90%)',
+                }
+              }}
+            >
+              Create Payment Link
+            </Button>
+          </Box>
+
+          <TableContainer 
+            component={Paper} 
+            sx={{ 
+              backgroundColor: '#1A202C !important',
+              borderRadius: '16px',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              overflow: 'hidden',
+              '& .MuiTable-root': {
+                backgroundColor: '#1A202C !important'
+              },
+              '& .MuiTableRow-root': {
+                backgroundColor: '#2D3748 !important'
+              },
+              '& .MuiTableCell-root': {
+                backgroundColor: '#2D3748 !important'
+              },
+              '& .MuiTableBody-root .MuiTableRow-root:hover': {
+                backgroundColor: '#364154 !important'
+              }
+            }}
+          >
+            <Table>
+              <TableHead>
+                <TableRow sx={{ 
+                  backgroundColor: '#151A23 !important',
+                }}>
+                  <TableCell sx={{ color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px' }}>Payment Link ID</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px' }}>Price</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px' }}>Currency</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px' }}>Status</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px' }}>Invoice URL</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px' }}>Created At</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {paymentLinks.map((link, index) => (
+                  <MotionTableRow
+                    key={link._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    sx={{
+                      backgroundColor: '#2D3748 !important',
+                      '&:hover': {
+                        backgroundColor: '#364154 !important',
+                        transition: 'all 0.2s ease'
+                      }
+                    }}
+                  >
+                    <TableCell 
+                      sx={{ 
+                        color: '#ffffff', 
+                        fontFamily: 'monospace',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        padding: '16px',
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      {link._id}
+                    </TableCell>
+                    <TableCell 
+                      sx={{ 
+                        color: '#ffffff',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        padding: '16px',
+                        fontSize: '0.9rem'
+                      }}
+                    >
+                      {link.amount}
+                    </TableCell>
+                    <TableCell 
+                      sx={{ 
+                        color: '#ffffff',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        padding: '16px',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      {link.currency}
+                    </TableCell>
+                    <TableCell sx={{ 
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)', 
+                      padding: '16px'
+                    }}>
+                      <Chip 
+                        label={link.status}
+                        sx={{
+                          backgroundColor: `${getStatusColor(link.status)}20`,
+                          color: getStatusColor(link.status),
+                          fontWeight: 500,
+                          fontSize: '0.85rem',
+                          height: '24px'
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Link 
+                          to={`/PaymentLinkGenerator/gett/${authToken}/${link.uniqueid}`}
+                          style={{ 
+                            color: '#00B4DB',
+                            textDecoration: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            fontSize: '0.9rem'
+                          }}
+                        >
+                          View <Launch sx={{ fontSize: 16 }} />
+                        </Link>
+                        <IconButton
+                          onClick={() => handleCopyLink(`https://alpha-payment-frontend.vercel.app/${authToken}/${link.uniqueid}`)}
+                          size="small"
+                          sx={{ 
+                            color: '#00B4DB',
+                            '&:hover': {
+                              background: 'rgba(0, 180, 219, 0.2)',
+                            }
+                          }}
+                        >
+                          <ContentCopy sx={{ fontSize: 16 }} />
+                        </IconButton>
+                      </Box>
+                    </TableCell>
+                    <TableCell 
+                      sx={{ 
+                        color: '#ffffff',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        padding: '16px',
+                        fontSize: '0.85rem'
+                      }}
+                    >
+                      {link.createdat}
+                    </TableCell>
+                  </MotionTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Box>
+
+      <Dialog 
+        open={isFormOpen} 
+        onClose={() => setIsFormOpen(false)}
+        PaperProps={{
+          sx: {
+            background: '#2D3748',
+            color: 'white',
+            borderRadius: '16px',
+            minWidth: '400px'
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          pb: 2
+        }}>
+          Create Payment Link
+        </DialogTitle>
+        <form onSubmit={createPaymentLink}>
+          <DialogContent sx={{ mt: 2 }}>
+            <TextField
+              fullWidth
+              label="Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  color: 'white',
+                  '& fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.23)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#00B4DB',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              label="Currency"
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              required
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  color: 'white',
+                  '& fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.23)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#00B4DB',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              label="Note"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              required
+              multiline
+              rows={3}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: 'white',
+                  '& fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.23)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#00B4DB',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+              }}
+            />
+          </DialogContent>
+          <DialogActions sx={{ 
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            p: 2
+          }}>
+            <Button 
+              onClick={() => setIsFormOpen(false)}
+              sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={loading}
+              sx={{
+                background: 'linear-gradient(45deg, #00B4DB 30%, #0083B0 90%)',
+                color: 'white',
+                '&:hover': {
+                  background: 'linear-gradient(45deg, #0083B0 30%, #00B4DB 90%)',
+                }
+              }}
+            >
+              {loading ? 'Creating...' : 'Create'}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </Box>
   );
 }
 

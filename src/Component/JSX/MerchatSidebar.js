@@ -1,14 +1,21 @@
 import "../CSS/Sidebar.css";
-import { AccountCircleRounded, AttachMoneyRounded, BarChartRounded, DashboardRounded } from '@mui/icons-material';
+import { AccountCircleRounded, AttachMoneyRounded, BarChartRounded, DashboardRounded, LogoutRounded  } from '@mui/icons-material';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import HistoryIcon from '@mui/icons-material/History';
 import CategoryIcon from '@mui/icons-material/Category';
+
 import logo from '../Images/IMG_3028.JPG'
 import { NavLink } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 function MerchatSidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
 
   return (
     <div className="App">
@@ -19,7 +26,7 @@ function MerchatSidebar() {
           <div className="profile">
           <NavLink to='/'>
             <img className="Logo"
-              src={logo}
+              src="https://media.kasperskydaily.com/wp-content/uploads/sites/85/2023/06/23014456/top-eight-crypto-scams-2023-featured.jpg"
               alt="profile_img"
             />
             </NavLink>
@@ -40,6 +47,21 @@ function MerchatSidebar() {
               <NavLink to='/DonationNavigation' className='nav-links'>
                 <HistoryIcon className="icon" style={{ color: 'white' }} /> <span>Donation Link</span>
               </NavLink>
+              <div 
+                className='nav-links' 
+                onClick={handleLogout}
+                style={{ 
+                  marginTop: '20px',
+                  cursor: 'pointer',
+                  color: '#FF5757',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 87, 87, 0.1)'
+                  }
+                }}
+              >
+                <LogoutRounded className="icon" style={{ color: '#FF5757' }} /> 
+                <span>Logout</span>
+              </div>
             </div>
           </div>
         </div>

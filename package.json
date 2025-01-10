@@ -2,9 +2,8 @@
   "name": "react-typescript-starter",
   "homepage": "/",
   "version": "0.1.0",
-  "private": true,
-  "proxy": "http://127.0.0.1:5000",
 
+  
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -23,6 +22,7 @@
     "browserify-zlib": "^0.2.0",
     "clipboard-copy": "^4.0.1",
     "ethers": "^5",
+    "framer-motion": "^10.18.0",
     "http": "npm:http-browserify",
     "http-browserify": "latest",
     "https": "npm:https-browserify",
@@ -35,6 +35,7 @@
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.16.0",
     "react-scripts": "^5.0.1",
+    "react-toastify": "^9.1.3",
     "redux": "^4.2.1",
     "stream": "^0.0.2",
     "stream-http": "^3.2.0",
